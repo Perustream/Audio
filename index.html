@@ -7,14 +7,30 @@
   <title>Radio Pasión</title>
   <link rel="manifest" href="manifest.json"/>
   <meta name="theme-color" content="#c62828"/>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #ffe0e0;
+      padding: 20px;
+    }
+    #installBtn {
+      display: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      background: #c62828;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body style="text-align: center; font-family: sans-serif; background: #ffe0e0; color: #000;">
-
+<body>
   <h1>Radio Pasión</h1>
-  <p>Escucha la radio del amor ❤️</p>
-  <button id="installBtn" style="padding: 10px 20px; font-size: 18px; background: #c62828; color: white; border: none; border-radius: 5px; cursor: pointer;">
-    Instalar App
-  </button>
+  <p>La radio del amor ❤️</p>
+  <button id="installBtn">Instalar App</button>
 
   <script>
     let deferredPrompt;
@@ -25,9 +41,11 @@
       deferredPrompt = e;
       installBtn.style.display = 'inline-block';
 
-      // También mostrar automáticamente el prompt tras 500ms
+      // También lanzar automáticamente el prompt después de medio segundo
       setTimeout(() => {
-        deferredPrompt.prompt();
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+        }
       }, 500);
     });
 
@@ -36,9 +54,7 @@
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
-          console.log('Usuario instaló la PWA');
-        } else {
-          console.log('Usuario canceló la instalación');
+          installBtn.style.display = 'none';
         }
         deferredPrompt = null;
       }

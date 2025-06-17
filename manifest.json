@@ -1,10 +1,10 @@
 {
-  "name": "Mi PWA",
-  "short_name": "App",
+  "name": "Radio Pasión",
+  "short_name": "Pasión",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#c62828",
   "icons": [
     {
       "src": "icon-192.png",
