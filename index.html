@@ -1,70 +1,41 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Radio Pasión</title>
-  <link rel="manifest" href="manifest.json"/>
-  <meta name="theme-color" content="#c62828"/>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      background: #ffe0e0;
-      padding: 20px;
-    }
-    #installBtn {
-      display: none;
-      padding: 12px 24px;
-      font-size: 18px;
-      background: #c62828;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      margin-top: 20px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <h1>Radio Pasión</h1>
-  <p>La radio del amor ❤️</p>
-  <button id="installBtn">Instalar App</button>
+  <meta name="theme-color" content="#2f2325" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" type="image/png" />
 
   <script>
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registrado'))
+        .catch(err => console.error('Error al registrar el SW:', err));
+    }
 
+    let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      installBtn.style.display = 'inline-block';
-
-      // También lanzar automáticamente el prompt después de medio segundo
       setTimeout(() => {
         if (deferredPrompt) {
           deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choice) => {
+            console.log(choice.outcome === 'accepted'
+              ? 'Instalación aceptada'
+              : 'Instalación cancelada');
+            deferredPrompt = null;
+          });
         }
       }, 500);
     });
-
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          installBtn.style.display = 'none';
-        }
-        deferredPrompt = null;
-      }
-    });
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(() => {
-        console.log('Service Worker registrado');
-      });
-    }
   </script>
+</head>
+<body style="text-align:center; background:#2f2325; color:white; font-family:sans-serif;">
+  <h1>📻 Radio Pasión</h1>
+  <p>Escucha la radio del amor ❤️</p>
+  <audio controls autoplay src="https://mediastreamm.com/8226/stream"></audio>
 </body>
 </html>
